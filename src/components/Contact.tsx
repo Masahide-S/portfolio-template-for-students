@@ -24,9 +24,6 @@ const Contact: React.FC = () => {
           <a href={`https://github.com/${githubId}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-6 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary/80 transition-all duration-300">
             <FaGithub className="text-2xl" /><span>GitHub</span>
           </a>
-          <a href={`https://twitter.com/${xId}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-6 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary/80 transition-all duration-300">
-            <FaXTwitter className="text-2xl" /><span>X (Twitter)</span>
-          </a>
           <a href={`mailto:${email}`} className="flex items-center gap-3 px-6 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary/80 transition-all duration-300">
             <FaEnvelope className="text-2xl" /><span>Email</span>
           </a>

@@ -64,7 +64,6 @@ const Hero: React.FC = () => {
             <p className="max-w-xl mt-6 leading-relaxed text-text-sub whitespace-pre-line">{aboutMe}</p>
             <div className="flex justify-center md:justify-start gap-4 mt-6">
               <a href={`https://github.com/${githubId}`} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-2xl text-text-sub hover:text-primary transition-colors"><FaGithub /></a>
-              <a href={`https://twitter.com/${xId}`} target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" className="text-2xl text-text-sub hover:text-primary transition-colors"><FaXTwitter /></a>
               <a href={`mailto:${email}`} aria-label="Email" className="text-2xl text-text-sub hover:text-primary transition-colors"><FaEnvelope /></a>
             </div>
           </div>
