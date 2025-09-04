@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
         </nav>
         {/* コピーライト表記 */}
         <p className="text-text-sub text-sm">
-          &copy; {new Date().getFullYear()} {siteConfig.profile.name}. All Rights Reserved.
+          &copy; {new Date().getFullYear()} {siteConfig.profile.nameEn}. All Rights Reserved.
         </p>
       </div>
     </footer>
