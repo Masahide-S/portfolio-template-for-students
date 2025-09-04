@@ -5,8 +5,25 @@ import "./globals.css";
  * サイトのメタデータ (SEOやSNS共有時に使用される情報)
  */
 export const metadata: Metadata = {
-  title: "[あなたの名前] | Portfolio",
-  description: "[あなたの名前]のポートフォリオサイトです。",
+  title: "Masahide's Portfolio",
+  description: "関口昌英のポートフォリオサイトです。",
+
+  // ▼▼▼ ここからOGP設定を追加 ▼▼▼
+  openGraph: {
+    title: "Masahide's Portfolio", // OGP用のタイトル
+    description: "関口昌英のポートフォリオサイトです。", // OGP用の説明文
+    url: "https://feature-update-personal-data.d3e27exnxbgcut.amplifyapp.com/", // サイトの公開URL
+    siteName: "Masahide's Portfolio",
+    images: [
+      {
+        url: 'https://feature-update-personal-data.d3e27exnxbgcut.amplifyapp.com/ogp-image.png', // OGP画像のURL
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'ja_JP',
+    type: 'website',
+  },
 };
 
 /**
