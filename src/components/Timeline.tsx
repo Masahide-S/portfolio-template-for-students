@@ -85,7 +85,7 @@ const Timeline: React.FC = () => {
         return dateA.getTime() - dateB.getTime();
       }
     });
-  }, [activeTag, sortOrder]); // activeTagかsortOrderが変更されたら再実行
+  }, [activeTag, sortOrder, historyItems]); // activeTagかsortOrderが変更されたら再実行
 
   return (
     <section id="timeline" className="py-20 bg-base border-t-2 border-primary/10">

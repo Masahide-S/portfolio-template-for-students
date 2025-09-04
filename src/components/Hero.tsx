@@ -4,7 +4,8 @@
 
 import React from 'react';
 import { siteConfig } from '@/data/config';
-import { FaGithub, FaXTwitter, FaEnvelope } from 'react-icons/fa6';
+import { FaGithub, FaEnvelope } from 'react-icons/fa6';
+import Image from 'next/image';
 /**
  * ページの最上部に表示されるメインビジュアルとプロフィールセクション
  */
@@ -52,7 +53,14 @@ const Hero: React.FC = () => {
         {/* PC表示では横並び (md:flex-row)、スマホ表示では縦並び (flex-col) になるレイアウト */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-12">
           <div className="flex-shrink-0">
-            <img src={profileImage} alt="プロフィール画像" className="w-48 h-48 md:w-60 md:h-60 rounded-full shadow-lg border-4 border-surface" />
+            <Image 
+              src={siteConfig.profile.profileImage}
+              alt="プロフィール画像"
+              width={240} // 幅を指定
+              height={240} // 高さを指定
+              className="w-48 h-48 md:w-60 md:h-60 rounded-full shadow-lg border-4 border-surface"
+              priority // 優先的に読み込む画像に指定
+            />
           </div>
           <div className="text-center md:text-left">
             <h1 className="text-4xl md:text-5xl font-bold text-text-main">{name}</h1>

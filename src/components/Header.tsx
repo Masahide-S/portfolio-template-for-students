@@ -12,7 +12,7 @@ const Header: React.FC = () => {
     <header className="bg-base/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 shadow-sm">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         <a href="#about" className="text-xl font-bold text-primary hover:opacity-80 transition-opacity">
-          {siteConfig.profile.nameEn}'s Portfolio
+          {siteConfig.profile.nameEn}&apos;s Portfolio
         </a>
         {/* md (768px) 以上の画面幅でのみナビゲーションを表示 */}
         <nav className="hidden md:flex space-x-8">
