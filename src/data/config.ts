@@ -18,8 +18,8 @@ export const siteConfig = {
       faculty: "データサイエンス学部",
       entranceYear: 2024, //あなたの入学年
     },
-    profileImage: "https://placehold.jp/3d4070/ffffff/240x240.png", //あまたのプロフィール画像URL
-    mainVisual: "https://placehold.jp/1200x400.png?text=Main+Visual", //メインビジュアルのURL
+    profileImage: "/profile.png", //あまたのプロフィール画像URL
+    mainVisual: "/MainVisual.jpg", //メインビジュアルのURL
     aboutMe: `私はデータサイエンスを専攻する大学生で、プログラミングとAI技術に強い関心を持っています。
               新しい技術を学び、それを活用して人々の生活を便利にすることに情熱を注いでいます。
               データサイエンスだけでなく、開発やデザインにも興味を持っており、日々学びを深めています。`, //自己紹介文
@@ -35,6 +35,7 @@ export const siteConfig = {
   // --- ヘッダー・フッター ---
   header: {
     navItems: [
+      { name: 'Profile', href: '#about' },
       { name: 'Skills', href: '#skills' },
       { name: 'Timeline', href: '#timeline' },
       { name: 'Awards', href: '#awards' },
@@ -158,6 +159,15 @@ export const siteConfig = {
         description: `開発のための勉強の一環として、このポートフォリオサイトを作成しました。
                       Next.jsとTailwind CSSを使用し、レスポンシブデザインとモダンなUI/UXを意識して設計しました。`, 
         tags: ['勉強', '開発'], 
+      },
+      {
+        date: '2025年8月',
+        title: '初めてのインターンに参加',
+        description: `初めてのインターンシップに参加し、実際の開発現場を体験しました。
+        主に会社内で使用されるRAGの構築と改善を担当しました。具体的には、セキュリティチェックシートの記入の補助を行うRAGです。
+        RAGに触れるのは初めてで、最初は苦労しましたが、チームのサポートもあり、徐々に理解を深めることができました。
+        チームでの協力やコミュニケーションの重要性を学び、貴重な経験となりました。`,
+        tags: ['インターン', '開発'],
       },
     ],
   },
