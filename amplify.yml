@@ -11,8 +11,7 @@ frontend:
       commands:
         - pnpm run build
   artifacts:
-    # 静的エクスポートされたファイルが出力される 'out' フォルダを指定
-    baseDirectory: out
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
