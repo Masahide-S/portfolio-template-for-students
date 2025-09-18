@@ -3,3 +3,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  /* 大見出しのスタイル (既存) */
+  .section-title {
+    @apply text-3xl font-bold text-center mb-12 text-text-main relative pb-4;
+  }
+  .section-title::after {
+    @apply content-[''] absolute bottom-0 left-1/2 -translate-x-1/2 w-20 h-1 bg-primary rounded-full;
+  }
+
+  /* ▼▼▼ 小見出し用のスタイルを新しく追加 ▼▼▼ */
+  .subsection-title {
+    /* 文字色を元に戻し、下線のスペースを確保するためにpb-3を追加 */
+    @apply text-2xl font-bold text-center mb-10 text-text-main relative pb-3;
+  }
+  .subsection-title::after {
+    /* 大見出しより短く(w-12)、細い(h-0.5)、少し薄い(bg-primary/70)下線を中央に配置 */
+    @apply content-[''] absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-primary/70 rounded-full;
+  }
+}
