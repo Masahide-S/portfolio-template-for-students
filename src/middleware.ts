@@ -3,8 +3,8 @@ import type { NextRequest } from 'next/server'
 import { jwtVerify } from 'jose';
 
 // 秘密鍵をここで定義
-const secret = process.env.SECRET_COOKIE_PASSWORD 
-  ? new TextEncoder().encode(process.env.SECRET_COOKIE_PASSWORD) 
+const secret = process.env.JWT_KEY
+  ? new TextEncoder().encode(process.env.JWT_KEY)
   : undefined;
 
 export async function middleware(request: NextRequest) {

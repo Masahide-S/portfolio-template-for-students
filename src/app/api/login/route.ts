@@ -9,7 +9,7 @@ export async function POST(request: Request) {
 
   // 1. パスワードのチェック
 if (password === process.env.ADMIN_PASSWORD) {
-    const secret = new TextEncoder().encode(process.env.SECRET_COOKIE_PASSWORD!);
+    const secret = new TextEncoder().encode(process.env.JWT_KEY!);
     const jwt = await new SignJWT({ isAdmin: true })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()

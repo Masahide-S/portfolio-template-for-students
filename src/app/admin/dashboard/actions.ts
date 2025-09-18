@@ -6,8 +6,8 @@ import { getSiteData } from '@/lib/dynamodb';
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 
-const secret = process.env.SECRET_COOKIE_PASSWORD 
-  ? new TextEncoder().encode(process.env.SECRET_COOKIE_PASSWORD) 
+const secret = process.env.JWT_KEY
+  ? new TextEncoder().encode(process.env.JWT_KEY)
   : undefined;
 
 async function verifyAuth() {

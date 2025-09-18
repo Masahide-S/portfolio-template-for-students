@@ -11,7 +11,7 @@ import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 
 export const dynamic = 'force-dynamic';
 
-const secret = new TextEncoder().encode(process.env.SECRET_COOKIE_PASSWORD!);
+const secret = new TextEncoder().encode(process.env.JWT_KEY!);
 
 async function verifyAuth(request: NextRequest): Promise<boolean> {
   const token = request.cookies.get('admin-token')?.value;
