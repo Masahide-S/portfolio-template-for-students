@@ -1,18 +1,21 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 import { getSiteData } from '@/lib/dynamodb';
+
+// DynamoDBClientは'@aws-sdk/client-dynamodb'からインポート
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+
+// PutCommandとDynamoDBDocumentClientは'@aws-sdk/lib-dynamodb'からインポート
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 
 export const dynamic = 'force-dynamic';
 
-// JWTの秘密鍵を準備
 const secret = new TextEncoder().encode(process.env.SECRET_COOKIE_PASSWORD!);
 
-// --- 認証チェックを行う共通関数 ---
-async function verifyAuth(): Promise<boolean> {
-  const token = (await cookies()).get('admin-token')?.value;
+// 👇 requestを引数に取るように変更
+async function verifyAuth(request: NextRequest): Promise<boolean> {
+  const token = request.cookies.get('admin-token')?.value;
 
   if (!token) return false;
   try {
@@ -23,10 +26,9 @@ async function verifyAuth(): Promise<boolean> {
   }
 }
 
-
-// GETリクエスト：現在のコンテンツを返す
-export async function GET() {
-  const isAuthed = await verifyAuth();
+// 👇 requestを引数に取るように変更
+export async function GET(request: NextRequest) {
+  const isAuthed = await verifyAuth(request);
   if (!isAuthed) {
     return new Response('Unauthorized', { status: 401 });
   }
@@ -35,9 +37,9 @@ export async function GET() {
   return NextResponse.json(data);
 }
 
-// POSTリクエスト：受け取ったデータでデータベースを更新する
-export async function POST(request: Request) {
-  const isAuthed = await verifyAuth();
+// 👇 requestを引数に取るように変更
+export async function POST(request: NextRequest) {
+  const isAuthed = await verifyAuth(request);
   if (!isAuthed) {
     return new Response('Unauthorized', { status: 401 });
   }
