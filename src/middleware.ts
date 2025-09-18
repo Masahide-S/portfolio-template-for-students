@@ -2,7 +2,10 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { jwtVerify } from 'jose';
 
-const secret = new TextEncoder().encode(process.env.SECRET_COOKIE_PASSWORD!);
+// 秘密鍵をここで定義
+const secret = process.env.SECRET_COOKIE_PASSWORD 
+  ? new TextEncoder().encode(process.env.SECRET_COOKIE_PASSWORD) 
+  : undefined;
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -12,38 +15,30 @@ export async function middleware(request: NextRequest) {
   const loginUrl = new URL('/admin/login', request.url);
   const dashboardUrl = new URL('/admin/dashboard', request.url);
 
-  if (token) {
+  if (token && secret) {
     try {
       await jwtVerify(token, secret);
       isLoggedIn = true;
     } catch (e) {
-      // ▼▼▼ ここが重要 ▼▼▼
-      // トークンが無効なら、Cookieを削除しつつログインページへ飛ばすレスポンスを作成
+      console.error("Middleware: Invalid token found.", e);
+      isLoggedIn = false;
+      // 無効なトークンを見つけたら、Cookieを削除しつつログインページへリダイレクト
       const response = NextResponse.redirect(loginUrl);
-      response.cookies.set('admin-token', '', { expires: new Date(0), path: '/' });
+      response.cookies.delete('admin-token');
       return response;
     }
   }
 
-  // ダッシュボードを見ようとしたが、ログインしていない場合
+  // ログインが必要なページに、未ログインでアクセスした場合
   if (pathname.startsWith('/admin/dashboard') && !isLoggedIn) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // ログインページを見ようとしたが、既にログインしている場合
-  if (pathname.startsWith('/admin/login') && isLoggedIn) {
+  // ログイン済みなのに、ログインページなどにアクセスした場合
+  if ((pathname.startsWith('/admin/login') || pathname === '/admin') && isLoggedIn) {
     return NextResponse.redirect(dashboardUrl);
   }
-  
-  // /admin に直接アクセスした場合
-  if (pathname === '/admin' && isLoggedIn) {
-     return NextResponse.redirect(dashboardUrl);
-  }
-  if (pathname === '/admin' && !isLoggedIn) {
-     return NextResponse.redirect(loginUrl);
-  }
 
-  // 上記のどれにも当てはまらない場合は、そのままアクセスを許可
   return NextResponse.next();
 }
 

@@ -6,13 +6,13 @@ import { getSiteData } from '@/lib/dynamodb';
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 
-const secret = new TextEncoder().encode(process.env.SECRET_COOKIE_PASSWORD!);
+const secret = process.env.SECRET_COOKIE_PASSWORD 
+  ? new TextEncoder().encode(process.env.SECRET_COOKIE_PASSWORD) 
+  : undefined;
 
-// 認証チェック
 async function verifyAuth() {
-  // 👇 (await cookies()) のように修正
   const token = (await cookies()).get('admin-token')?.value;
-  if (!token) return false;
+  if (!token || !secret) return false;
   try {
     await jwtVerify(token, secret);
     return true;
@@ -24,14 +24,20 @@ async function verifyAuth() {
 // データ取得アクション
 export async function getContent() {
   const isAuthed = await verifyAuth();
-  if (!isAuthed) return null;
+  if (!isAuthed) {
+    console.error("getContent: Unauthorized access attempt.");
+    return null;
+  }
   return await getSiteData();
 }
 
 // データ保存アクション
 export async function saveContent(newContent: any) {
   const isAuthed = await verifyAuth();
-  if (!isAuthed) throw new Error("Unauthorized");
+  if (!isAuthed) {
+    console.error("saveContent: Unauthorized access attempt.");
+    throw new Error("Unauthorized");
+  }
   try {
     const client = new DynamoDBClient({ region: process.env.APP_AWS_REGION });
     const docClient = DynamoDBDocumentClient.from(client);
