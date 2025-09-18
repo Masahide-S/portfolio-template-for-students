@@ -13,20 +13,22 @@ export const dynamic = 'force-dynamic';
 
 const secret = new TextEncoder().encode(process.env.SECRET_COOKIE_PASSWORD!);
 
-// 👇 requestを引数に取るように変更
 async function verifyAuth(request: NextRequest): Promise<boolean> {
   const token = request.cookies.get('admin-token')?.value;
 
-  if (!token) return false;
+  if (!token) {
+    console.error("Auth failed: No token found in cookies.");
+    return false;
+  }
   try {
     await jwtVerify(token, secret);
     return true;
   } catch (e) {
+    console.error("Auth failed: JWT verification error.", e);
     return false;
   }
 }
 
-// 👇 requestを引数に取るように変更
 export async function GET(request: NextRequest) {
   const isAuthed = await verifyAuth(request);
   if (!isAuthed) {
@@ -37,7 +39,6 @@ export async function GET(request: NextRequest) {
   return NextResponse.json(data);
 }
 
-// 👇 requestを引数に取るように変更
 export async function POST(request: NextRequest) {
   const isAuthed = await verifyAuth(request);
   if (!isAuthed) {
