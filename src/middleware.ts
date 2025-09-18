@@ -1,41 +1,40 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 import { getJwtSecret } from '@/lib/getJwtSecret';
-
-const secret = await getJwtSecret();
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('admin-token')?.value;
-  let isLoggedIn = false;
   
   const loginUrl = new URL('/admin/login', request.url);
   const dashboardUrl = new URL('/admin/dashboard', request.url);
 
-  if (token && secret) {
-    try {
-      await jwtVerify(token, secret);
-      isLoggedIn = true;
-    } catch (e) {
-      console.error("Middleware: Invalid token found, clearing cookie.");
-      isLoggedIn = false;
-      
-      // 無効なCookieを見つけたら、削除しつつログインページへリダイレクト
-      const response = NextResponse.redirect(loginUrl);
-      response.cookies.delete('admin-token');
-      return response;
+  // ▼▼▼ トークンが存在しない場合は、認証チェックをスキップ ▼▼▼
+  if (!token) {
+    // ダッシュボードを見ようとした場合のみ、ログインページへリダイレクト
+    if (pathname.startsWith('/admin/dashboard')) {
+      return NextResponse.redirect(loginUrl);
     }
+    // それ以外（/admin/loginなど）は、そのままアクセスを許可
+    return NextResponse.next();
   }
+  // ▲▲▲ ここまで ▲▲▲
 
-  // ログインが必要なページに、未ログインでアクセスした場合
-  if (pathname.startsWith('/admin/dashboard') && !isLoggedIn) {
-    return NextResponse.redirect(loginUrl);
-  }
-
-  // ログイン済みなのに、ログインページなどにアクセスした場合
-  if ((pathname.startsWith('/admin/login') || pathname === '/admin') && isLoggedIn) {
-    return NextResponse.redirect(dashboardUrl);
+  // --- トークンが存在する場合のみ、以下の認証チェックを実行 ---
+  try {
+    const secret = await getJwtSecret();
+    await jwtVerify(token, secret);
+    
+    // 認証成功：ログインページを見ようとしたらダッシュボードへ
+    if (pathname.startsWith('/admin/login')) {
+      return NextResponse.redirect(dashboardUrl);
+    }
+  } catch (e) {
+    // 認証失敗：無効なCookieを削除し、ログインページへ
+    const response = NextResponse.redirect(loginUrl);
+    response.cookies.delete('admin-token');
+    return response;
   }
 
   return NextResponse.next();
