@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 import { getSiteData } from '@/lib/dynamodb';
+import { getJwtSecret } from '@/lib/getJwtSecret';
 
 // DynamoDBClientは'@aws-sdk/client-dynamodb'からインポート
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
@@ -11,7 +12,7 @@ import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 
 export const dynamic = 'force-dynamic';
 
-const secret = new TextEncoder().encode(process.env.JWT_KEY!);
+const secret = await getJwtSecret();
 
 async function verifyAuth(request: NextRequest): Promise<boolean> {
   const token = request.cookies.get('admin-token')?.value;

@@ -5,10 +5,9 @@ import { jwtVerify } from 'jose';
 import { getSiteData } from '@/lib/dynamodb';
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { getJwtSecret } from '@/lib/getJwtSecret';
 
-const secret = process.env.JWT_KEY
-  ? new TextEncoder().encode(process.env.JWT_KEY)
-  : undefined;
+const secret = await getJwtSecret();
 
 async function verifyAuth() {
   const token = (await cookies()).get('admin-token')?.value;
