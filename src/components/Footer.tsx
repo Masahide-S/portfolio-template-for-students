@@ -1,17 +1,22 @@
 import React from 'react';
-import { siteConfig } from '@/data/config';
 
-/**
- * サイト全体のフッターコンポーネント
- * ナビゲーションリンクとコピーライトを表示する
- */
-const Footer: React.FC = () => {
+type Profile = { name?: string };
+type NavItem = { name: string; href: string };
+type HeaderData = { navItems?: NavItem[] };
+
+interface FooterProps {
+  profile: Profile;
+  header: HeaderData;
+}
+
+const Footer: React.FC<FooterProps> = ({ profile = {}, header = {} }) => {
+  const navItems = header.navItems || [];
+
   return (
     <footer className="bg-base py-8 border-t-2 border-primary/10">
       <div className="container mx-auto px-6 text-center">
-        {/* フッターナビゲーション */}
         <nav className="flex justify-center flex-wrap gap-x-6 gap-y-2 mb-6">
-          {siteConfig.header.navItems.map((item) => (
+          {navItems.map((item) => (
             <a 
               key={item.name} 
               href={item.href} 
@@ -21,9 +26,8 @@ const Footer: React.FC = () => {
             </a>
           ))}
         </nav>
-        {/* コピーライト表記 */}
         <p className="text-text-sub text-sm">
-          &copy; {new Date().getFullYear()} {siteConfig.profile.name}. All Rights Reserved.
+          &copy; {new Date().getFullYear()} {profile.name}. All Rights Reserved.
         </p>
       </div>
     </footer>

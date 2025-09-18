@@ -1,17 +1,17 @@
-# Next.js & Tailwind CSS Portfolio Template (大学生用)
+# Next.js & AWS Portfolio (CMS機能付き)
 
-これは、Next.js (App Router) と Tailwind CSS を使用して構築された、モダンでカスタマイズ性の高い大学生のポートフォリオサイトのテンプレートです。パッケージマネージャーとして`pnpm`の使用を推奨しています。
+これは、Next.js (App Router) と Tailwind CSS で構築された、モダンで高速なポートフォリオサイトです。コンテンツ管理に**AWS DynamoDB**を使用し、サイトの情報をデプロイ後に**管理者画面から直接編集できる**CMS（コンテンツ管理システム）機能を搭載しています。
 
-![ポートフォリオサイトのスクリーンショット](template.png)
+![ポートフォリオサイトのスクリーンショット](public/ogp-image.png)
 
 ## ✨ 特徴
 
-- **データの一元管理**: `src/data/config.ts` ファイルを編集するだけで、プロフィール、スキル、経歴などの全情報を簡単に更新できます。
-- **動的な情報表示**: 年齢や学年が自動で計算・更新されます。
-- **インタラクティブなUI**: タイムラインセクションでは、タグによる絞り込みと、日付による並び替えが可能です。
-- **モダンな技術スタック**: Next.js (App Router) を採用し、高速な表示と優れた開発体験を実現します。
-- **デザインのカスタマイズ性**: Tailwind CSS を使用しており、カラーテーマやフォントの変更が容易です。
-- **レスポンシブ対応**: PCからスマートフォンまで、様々なデバイスで美しく表示されます。
+-   **動的なコンテンツ管理**: AWS DynamoDBに保存された情報を元にサイトが生成されます。
+-   **管理者機能**: 秘密の管理者ページ (`/admin`) からログインし、サイトに表示されるほぼ全てのテキスト情報（プロフィール、スキル、経歴など）を**デプロイし直すことなく**リアルタイムで更新できます。
+-   **モダンな技術スタック**: Next.js (App Router) を採用し、サーバーコンポーネントによる高速な表示と優れた開発体験を実現します。
+-   **インタラクティブなUI**: プロダクト紹介はスワイプ可能なカルーセル形式で表示されます。
+-   **高い拡張性**: AWSのサービス（Amplify, DynamoDB）をベースに構築されており、今後の機能追加にも柔軟に対応できます。
+-   **デザインのカスタマイズ性**: Tailwind CSS を使用しており、カラーテーマやフォントの変更が容易です。
 
 ---
 
@@ -20,155 +20,93 @@
 このプロジェクトの主要なファイルとフォルダの役割は以下の通りです。
 
 ```
+
 .
-├── public/              # 画像などの静的ファイル置き場
+├── public/                 # 画像などの静的ファイル置き場
+├── scripts/
+│   └── migrate.ts          # ★初期データをDBに移行するスクリプト
 ├── src/
 │   ├── app/
-│   │   ├── globals.css  # サイト全体のグローバルCSS
-│   │   ├── layout.tsx   # 全ページ共通のレイアウト（骨格）
-│   │   └── page.tsx     # メインページの本体
-│   ├── components/      # 各セクションのReactコンポーネント
-│   └── data/
-│       └── config.ts    # ★サイトの全データを管理する設定ファイル
-├── .gitignore           # Gitの追跡から除外するファイルを設定
-├── next.config.mjs      # Next.jsの動作設定ファイル
-├── package.json         # プロジェクト情報と依存パッケージのリスト
-├── pnpm-lock.yaml       # 依存パッケージのバージョンを固定するファイル
-├── postcss.config.js    # PostCSS（Tailwind CSSの動作に必要）の設定
-├── README.md            # このファイル
-└── tailwind.config.ts   # Tailwind CSSのデザイン設定（色、フォントなど）
+│   │   ├── admin/          # ★管理者画面用のページ
+│   │   ├── api/            # ★ログインやDB連携用のAPI
+│   │   ├── globals.css     # サイト全体のグローバルCSS
+│   │   ├── layout.tsx      # 全ページ共通のレイアウト
+│   │   └── page.tsx        # ★メインページの司令塔
+│   ├── components/         # 各セクションのReactコンポーネント
+│   ├── data/
+│   │   ├── config.ts       # 初期データとタグスタイルを管理
+│   │   └── tagStyles.ts    # （分離した場合）タグスタイルを管理
+│   └── lib/
+│       └── dynamodb.ts     # ★AWS DynamoDBとの通信ロジック
+├── .env.local              # ★AWS情報やパスワードなどの秘密鍵
+├── middleware.ts           # ★管理者ページへのアクセス制御
+├── next.config.js          # Next.jsの動作設定ファイル
+├── package.json            # プロジェクト情報と依存パッケージ
+└── tailwind.config.ts      # Tailwind CSSのデザイン設定
+
 ```
 
--   **`src/data/config.ts`**: ★最重要ファイル。あなたのプロフィール、スキル、経歴など、サイトに表示する**テキストやデータはすべてここで編集します**。
--   **`src/app/page.tsx`**: 各セクションのコンポーネントを組み合わせて、ページのレイアウトを決定します。セクションを非表示にしたい場合はこのファイルを編集します。
--   **`src/components/`**: サイトを構成する部品（ヘッダー、フッター、各セクション）が入っています。デザインやレイアウトを大きく変更したい場合に編集します。
--   **`public/`**: プロフィール画像やメインビジュアルなどの画像ファイルは、このフォルダに置いて使うのが一般的です。
+-   **`src/app/page.tsx`**: サイトのメインページ。サーバーコンポーネントとして動作し、表示に必要なデータをAWS DynamoDBから取得して、各部品コンポーネントに渡す「司令塔」の役割を担います。
+-   **`src/components/`**: サイトを構成する部品（ヘッダー、各セクション）が入っています。`page.tsx`から渡されたデータを元に表示を行います。
+-   **`src/lib/dynamodb.ts`**: AWS DynamoDBと通信し、サイトのコンテンツを取得するための関数が定義されています。
+-   **`src/app/admin/`**: 管理者機能に関連するページ（ログイン画面、ダッシュボード）が格納されています。
+-   **`src/app/api/`**: 認証（ログイン・ログアウト）やコンテンツの更新処理を行う、サーバーサイドのAPIが格納されています。
+-   **`middleware.ts`**: 管理者ページへのアクセスを制御し、未ログインのユーザーをログインページにリダイレクトさせる「門番」の役割を果たします。
+-   **`scripts/migrate.ts`**: 開発の初期段階で、`src/data/config.ts`に記述した内容をDynamoDBに一括で登録するための移行用スクリプトです。
 -   **`tailwind.config.ts`**: サイトの**見た目（色、フォントなど）**を根本的に変更したい場合に編集します。
-
-### ### Components フォルダの中身
-
-`src/components/` フォルダ内の各コンポーネントは、サイトの各セクションに対応しています。
-
--   `Header.tsx`: サイト上部に固定表示されるヘッダー。ナビゲーションリンクが含まれます。
--   `Footer.tsx`: サイト下部に表示されるフッター。コピーライト表記とナビゲーションリンクが含まれます。
--   `Hero.tsx`: ページのトップに表示されるメインビジュアルとプロフィール紹介エリアです。年齢や学年の自動計算もここで行われます。
--   `Skills.tsx`: あなたの技術スタックをカテゴリ別に表示するセクションです。
--   `Certifications.tsx`: 取得した資格を一覧表示するセクションです。
--   `Timeline.tsx`: 学歴や職歴、イベント参加歴などを時系列で表示するセクションです。タグでの絞り込みや並び替え機能があります。一定の長さ以上の説明文章には折り畳まれます。
--   `Awards.tsx`: 受賞歴をカード形式で表示するセクションです。
--   `Research.tsx`: 研究内容をカード形式で表示するセクションです。
--   `Contact.tsx`: SNSやメールへのリンクをまとめた連絡先セクションです。
+-   **`.env.local`**: AWSの認証情報や、管理者画面のパスワードなど、外部に公開してはいけない秘密の情報を管理します。
 
 ---
-
 ## 🚀 セットアップ方法
 
-1.  **pnpmをインストール:**
-    もし`pnpm`をインストールしていない場合は、以下のコマンドでインストールします。
-    ```bash
-    npm install -g pnpm
-    ```
+1.  **AWSの準備**:
+    * AWSアカウントを作成し、IAMユーザーを発行してアクセスキーを取得します。
+    * Amazon DynamoDBで、サイトのコンテンツを保存するためのテーブルを1つ作成します。
 
-2.  **リポジトリをクローンまたはダウンロード:**
-    ```bash
-    git clone https://github.com/Masahide-S/portfolio-template-for-students
-    cd portfolio-template-for-students
-    ```
+2.  **プロジェクトのセットアップ**:
+    * リポジトリをクローンし、`pnpm install`で依存パッケージをインストールします。
 
-3.  **必要なパッケージをインストール:**
-    Node.jsがインストールされていることを確認してから、以下のコマンドを実行します。
-    ```bash
-    pnpm install
-    ```
+3.  **環境変数の設定**:
+    * `.env.local.example`をコピーして`.env.local`というファイルを作成します。
+    * 取得したAWSのアクセスキー、DynamoDBのテーブル名、リージョンなどを設定します。
+    * 管理者画面のログインパスワードや、セッションを暗号化するための秘密鍵も設定します。
 
-4.  **設定ファイルを編集:**
-    `src/data/config.ts` を開き、あなたの情報（プロフィール、SNSリンク、スキル、経歴など）に書き換えてください。
+4.  **初期データの移行**:
+    * `src/data/config.ts`に必要な情報を記述します。
+    * `pnpm run migrate`コマンドを実行し、`config.ts`の内容をAWS DynamoDBに登録します。
 
-5.  **開発サーバーを起動:**
-    ```bash
-    pnpm dev
-    ```
-    ブラウザで `http://localhost:3000` を開き、サイトが表示されることを確認します。
+5.  **開発サーバーを起動**:
+    * `pnpm dev`を実行し、`http://localhost:3000`でサイトが表示されることを確認します。
+    * `http://localhost:3000/admin`にアクセスし、管理者画面にログインできることを確認します。
 
-6.  **デプロイ:**
-    Vercelへのデプロイが推奨されています。GitHubリポジトリと連携すれば、数クリックで簡単に公開できます。Vercelは自動で`pnpm`を認識してくれます。
+6.  **デプロイ**:
+    * **AWS Amplify**へのデプロイが推奨されます。
+    * GitHubリポジトリと連携すれば、サーバー機能（APIルートなど）を含むNext.jsアプリケーションを簡単に公開できます。
+    * デプロイ時には、Amplifyの環境変数設定画面で`.env.local`の内容を正しく設定する必要があります。
 
 ---
+## 🔧 サイトの更新方法
 
-## 🔧 カスタマイズガイド
+サイトの公開後、内容を更新する方法は2つあります。
 
-### データの更新
+### 1. 管理者画面から更新する (推奨)
+1.  サイトの`/admin`にアクセスし、設定したパスワードでログインします。
+2.  右側のJSONエディタで、プロフィールや経歴などのテキスト情報を直接編集します。
+3.  左側のプレビュー画面で変更がリアルタイムに反映されるのを確認します。
+4.  「保存」ボタンを押すと、変更がAWS DynamoDBに保存され、**即座に公開サイトに反映されます**。
 
-このテンプレートでは、サイトに表示されるほぼ全てのデータが **`src/data/config.ts`** ファイルで管理されています。内容を変更したい場合は、このファイルを編集してください。
+### 2. `config.ts`を編集して再移行する
+新しいセクション（例: プロダクト）を追加する場合など、データ構造自体を変更したい場合は、以下の手順を踏みます。
 
-- **プロフィール**: 名前、キャッチコピー、自己紹介文など
-- **スキル**: 表示する技術スタックとアイコン
-- **経歴・受賞歴など**: 各セクションの項目
-
-### セクションの表示・非表示
-
-特定のセクション（例: 「資格 (Certifications)」）が不要な場合は、以下の2ステップで簡単に非表示にできます。
-
-1.  **メインページからコンポーネントを削除:**
-    `src/app/page.tsx` を開き、不要なセクションのコンポーネントの行を削除（またはコメントアウト）します。
-    ```tsx:src/app/page.tsx
-    // import Certifications from "@/components/Certifications"; // ← インポートを削除
-
-    export default function Home() {
-      return (
-        <main>
-          {/* ... */}
-          <Skills />
-          {/* <Certifications /> */} {/* ← 表示部分を削除 */}
-          <Timeline />
-          {/* ... */}
-        </main>
-      );
-    }
-    ```
-
-2.  **ヘッダーとフッターからリンクを削除:**
-    `src/data/config.ts` を開き、`header.navItems` の配列から、不要なセクションへのリンクを削除します。
-    ```ts:src/data/config.ts
-    header: {
-      navItems: [
-        { name: 'Skills', href: '#skills' },
-        // { name: 'Certifications', href: '#certifications' }, // ← この行を削除
-        { name: 'Timeline', href: '#timeline' },
-        // ...
-      ],
-    },
-    ```
-
-### デザイン（色合い）の変更
-
-サイト全体のカラーテーマは **`tailwind.config.ts`** ファイルで定義されています。
-
-```ts:tailwind.config.ts
-// ...
-    extend: {
-      colors: {
-        'base': '#FFFBF5',      // 基本背景色
-        'surface': '#F7EFE5',   // 第二背景色
-        'primary': '#E7A46E',   // メインのアクセントカラー
-        'text-main': '#4C433E',  // メインテキスト色
-        'text-sub': '#8E827A',   // サブテキスト色
-      },
-      // ...
-    },
-// ...
-```
-これらのカラーコード（例: `#FFFBF5`）を好きな色に変更するだけで、サイト全体の雰囲気を簡単に変えることができます。変更後は、開発サーバーの再起動を忘れないでください。
+1.  `config.ts`に新しいデータを追加・編集します。
+2.  `pnpm run migrate`を実行して、データベースの内容を更新します。
+3.  変更をGitにプッシュし、AWS Amplify経由で再デプロイします。
 
 ---
-
 ## 🛠️ 使用技術
 
--   [Next.js](https://nextjs.org/) - Reactフレームワーク
--   [React](https://reactjs.org/) - UIライブラリ
--   [TypeScript](https://www.typescriptlang.org/) - JavaScriptへの型付け
--   [Tailwind CSS](https://tailwindcss.com/) - CSSフレームワーク
--   [React Icons](https://react-icons.github.io/react-icons/) - アイコンライブラリ
--   [Tailwind Scrollbar](https://github.com/adoxography/tailwind-scrollbar) - スクロールバーのデザイン
-
----
+-   **Frontend**: Next.js (App Router), React, TypeScript, Tailwind CSS
+-   **Backend**: Next.js (API Routes), AWS DynamoDB
+-   **Authentication**: JWT (jose)
+-   **Deployment**: AWS Amplify
+-   **UI/Libraries**: Swiper.js, React Icons, Monaco Editor

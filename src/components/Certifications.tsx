@@ -1,26 +1,37 @@
 import React from 'react';
-import { siteConfig } from '@/data/config';
+import { FaAward, FaCertificate } from 'react-icons/fa'; // 念のため他のアイコンもインポート
+import { IconType } from 'react-icons';
 
-/**
- * 取得した資格情報を表示するセクションコンポーネント
- */
-const Certifications: React.FC = () => {
-  // 設定ファイルから資格リストを取得
-  const { items } = siteConfig.certifications;
+// アイコン名とコンポーネントを対応付けるマップ
+const iconMap: { [key: string]: IconType } = { FaAward, FaCertificate };
+
+// 型定義
+type Certification = {
+  name: string;
+  issuer: string;
+  date: string;
+  iconName: string; 
+};
+
+const Certifications: React.FC<{ certifications: Certification[] }> = ({ certifications = [] }) => {
+  const getIcon = (iconName: string) => {
+    return iconMap[iconName] ? React.createElement(iconMap[iconName]) : null;
+  };
 
   return (
-    <section id="certifications" className="py-20 bg-surface border-t-2 border-primary/10">
-      <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-12 text-text-main relative pb-4 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-primary after:rounded-full">
-          Certifications
-        </h2>
+    <div id="certifications" className="py-10">
+      <h3 className="subsection-title">Certifications</h3>
         <div className="max-w-3xl mx-auto">
           <div className="space-y-6">
-            {/* 資格リストをループで表示 */}
-            {items.map((item, index) => (
-              <div key={index} className="flex items-start gap-6 p-6 bg-base rounded-lg shadow-md">
+            {certifications.map((item, index) => (
+              // ▼▼▼ このdivにホバーエフェクト用のクラスを追加 ▼▼▼
+              <div 
+                key={index} 
+                className="flex items-start gap-6 p-6 bg-base rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2"
+              >
+              {/* ▲▲▲ ここまで ▲▲▲ */}
                 <div className="text-3xl text-primary mt-1">
-                  {React.createElement(item.icon)}
+                  {getIcon(item.iconName)}
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-text-main">{item.name}</h3>
@@ -32,7 +43,6 @@ const Certifications: React.FC = () => {
           </div>
         </div>
       </div>
-    </section>
   );
 };
 

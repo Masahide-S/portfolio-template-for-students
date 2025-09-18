@@ -1,10 +1,22 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
-import { siteConfig } from '@/data/config';
 import { IconType } from 'react-icons';
 
-// このコンポーネントが受け取るデータの型を更新
+// ▼▼▼ 使用する可能性のあるアイコンをすべてインポート ▼▼▼
+import { 
+  FaGraduationCap, FaBuilding, FaCode, FaLightbulb, FaTrophy, FaFlask, 
+  FaUsers, FaBrain, FaPalette, FaBook, FaCertificate 
+} from 'react-icons/fa';
+import { RiDatabaseLine } from "react-icons/ri";
+
+// アイコン名（文字列）とアイコンコンポーネントを対応付けるための「マップ」オブジェクト
+const iconMap: { [key: string]: IconType } = {
+  FaGraduationCap, FaBuilding, FaCode, FaLightbulb, FaTrophy, FaFlask, 
+  FaUsers, FaBrain, FaPalette, FaBook, FaCertificate, RiDatabaseLine
+};
+
+// --- このコンポーネントが受け取るデータの型定義 ---
 interface Detail {
   subtitle: string;
   text: string;
@@ -14,14 +26,18 @@ interface Item {
   title: string;
   description: string;
   tags: string[];
-  details?: Detail[]; // detailsはあってもなくても良い（オプショナル）
+  details?: Detail[];
+}
+interface TagStyles {
+  [key: string]: { color: string; iconName: string }; // icon -> iconName に変更
 }
 interface CollapsibleCardProps {
   item: Item;
   icon: IconType;
+  tagStyles: TagStyles;
 }
 
-const CollapsibleCard: React.FC<CollapsibleCardProps> = ({ item, icon }) => {
+const CollapsibleCard: React.FC<CollapsibleCardProps> = ({ item, icon, tagStyles }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isCollapsible, setIsCollapsible] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
@@ -45,18 +61,22 @@ const CollapsibleCard: React.FC<CollapsibleCardProps> = ({ item, icon }) => {
       
       <div className="flex flex-wrap gap-2 my-3">
         {item.tags.map(tagName => {
-          const style = siteConfig.tagStyles[tagName];
+          const style = tagStyles[tagName];
           if (!style) return null;
+          
+          // iconName（文字列）から、対応するアイコンコンポーネントをiconMapから取得
+          const TagIcon = iconMap[style.iconName];
+          if (!TagIcon) return null;
+
           return (
             <span key={tagName} className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${style.color}`}>
-              {React.createElement(style.icon, { className: 'w-3 h-3' })}
+              <TagIcon className="w-3 h-3" />
               {tagName}
             </span>
           );
         })}
       </div>
       
-      {/* ▼▼▼ ここから詳細表示セクション ▼▼▼ */}
       {item.details && item.details.length > 0 && (
         <div className="my-4 border-t border-surface pt-4 space-y-2">
           {item.details.map((detail, index) => (
@@ -67,7 +87,6 @@ const CollapsibleCard: React.FC<CollapsibleCardProps> = ({ item, icon }) => {
           ))}
         </div>
       )}
-      {/* ▲▲▲ ここまで ▲▲▲ */}
 
       <div className="relative overflow-hidden">
         <p 

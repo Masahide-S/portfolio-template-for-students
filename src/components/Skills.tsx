@@ -1,36 +1,40 @@
 import React from 'react';
-import { siteConfig } from '@/data/config';
+import { FaHtml5, FaCss3Alt, FaJsSquare, FaReact, FaNodeJs, FaPython, FaDatabase, FaGithub, FaDocker } from 'react-icons/fa';
+import { SiTypescript, SiNextdotjs, SiTailwindcss } from 'react-icons/si';
 import { IconType } from 'react-icons';
-/**
- * スキルセットを表示するセクションコンポーネント
- * configファイルからカテゴリ（フロントエンドなど）とスキルリストを取得して表示する
- */
 
-// スキルオブジェクトの型を定義
-type Skill = {
-  name: string;
-  icon: IconType;
+// アイコン名とコンポーネントを対応付けるマップ
+const iconMap: { [key: string]: IconType } = {
+  FaHtml5, FaCss3Alt, FaJsSquare, FaReact, FaNodeJs, FaPython, FaDatabase, FaGithub, FaDocker,
+  SiTypescript, SiNextdotjs, SiTailwindcss,
 };
-const Skills: React.FC = () => {
+
+// 型定義
+type Skill = { name: string; iconName: string; };
+type SkillsData = {
+  frontend?: Skill[];
+  backend?: Skill[];
+  others?: Skill[];
+};
+
+const Skills: React.FC<{ skills: SkillsData }> = ({ skills = {} }) => {
+  // アイコン名から実際のコンポーネントを取得する関数
+  const getIcon = (iconName: string) => {
+    return iconMap[iconName] ? React.createElement(iconMap[iconName]) : null;
+  };
+
   return (
-    <section id="skills" className="py-20 bg-surface border-t-2 border-primary/10">
-      <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-12 text-text-main relative pb-4 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-primary after:rounded-full">
-          Skills
-        </h2>
-        
-        {/* スキルカテゴリごとにループ処理 */}
-        {Object.entries(siteConfig.skills).map(([category, skills]) => (
-          // スキルリストが空でなければセクションを表示
-          (skills as Skill[]).length > 0 && (
+     <div id="skills" className="py-10">
+      <h3 className="subsection-title">Skills</h3>        
+      {Object.entries(skills).map(([category, skillList]) => (
+          skillList.length > 0 && (
             <div key={category} className="mb-12">
               <h3 className="text-xl font-semibold text-center mb-8 text-text-sub capitalize">{category}</h3>
               <div className="flex flex-wrap justify-center gap-6 md:gap-8">
-                {/* 各スキルをループ処理で表示 */}
-                {(skills as Skill[]).map((skill) => (
+                {skillList.map((skill) => (
                   <div key={skill.name} className="flex flex-col items-center gap-2 p-4 rounded-lg transition-all duration-300 hover:bg-base hover:scale-105">
-                    <div className="text-5xl text-primary">{React.createElement(skill.icon)}</div>
-                    <span className="text-sm text-text-main font-medium">{skill.name}</span>
+                    <div className="text-5xl text-primary">{getIcon(skill.iconName)}</div>
+                    <span className="text-sm font-medium">{skill.name}</span>
                   </div>
                 ))}
               </div>
@@ -38,7 +42,6 @@ const Skills: React.FC = () => {
           )
         ))}
       </div>
-    </section>
   );
 };
 
