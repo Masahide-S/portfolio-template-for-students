@@ -45,7 +45,7 @@ export async function POST(request: Request) {
   try {
     const newContent = await request.json();
     
-    const client = new DynamoDBClient({ region: process.env.AWS_REGION });
+    const client = new DynamoDBClient({ region: process.env.APP_AWS_REGION });
     const docClient = DynamoDBDocumentClient.from(client);
     const command = new PutCommand({
       TableName: process.env.DYNAMODB_TABLE_NAME,

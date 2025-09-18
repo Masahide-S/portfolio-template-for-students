@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 // データベース接続
-const client = new DynamoDBClient({ region: process.env.AWS_REGION });
+const client = new DynamoDBClient({ region: process.env.APP_AWS_REGION });
 const docClient = DynamoDBDocumentClient.from(client);
 
 async function migrate() {
