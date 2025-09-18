@@ -9,15 +9,23 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    console.log("1. パスワードを送信します:", password);
+
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password }),
     });
 
+    console.log("2. APIからレスポンスを受け取りました。ステータス:", res.status);
+
     if (res.ok) {
-      router.push('/admin/dashboard'); // ログイン成功ならダッシュボードへ
+      console.log("3. ログイン成功。/admin/dashboardへ移動します...");
+      router.push('/admin/dashboard');
+      console.log("4. router.pushが呼び出されました。");
     } else {
+      console.error("3. ログイン失敗。");
       setError('パスワードが違います。');
     }
   };
