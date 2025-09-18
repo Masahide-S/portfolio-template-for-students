@@ -8,10 +8,17 @@ frontend:
         - pnpm install
     build:
       commands:
-        # Amplifyの環境変数をNext.jsが読める.env.productionファイルに書き出す
+        # 1. Next.js用の環境変数ファイルを生成
         - echo "APP_AWS_REGION=$APP_AWS_REGION" >> .env.production
         - echo "DYNAMODB_TABLE_NAME=$DYNAMODB_TABLE_NAME" >> .env.production
         - echo "ADMIN_PASSWORD=$ADMIN_PASSWORD" >> .env.production
+        - echo "JWT_KEY=$JWT_KEY" >> .env.production
+        # 2. AWS SDK用の認証情報ファイル(~/.aws/credentials)を強制的に作成
+        - mkdir -p ~/.aws
+        - echo "[default]" > ~/.aws/credentials
+        - echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+        - echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+        # 3. Next.jsのビルドを実行
         - pnpm run build
   artifacts:
     baseDirectory: .next
