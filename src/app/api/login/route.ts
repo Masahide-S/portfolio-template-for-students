@@ -6,26 +6,30 @@ import { getJwtSecret } from '@/lib/getJwtSecret';
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
-  const { password } = await request.json();
+  try {
+    const { password } = await request.json();
 
-  // 1. パスワードのチェック
-if (password === process.env.ADMIN_PASSWORD) {
-    const secret = await getJwtSecret();
-    const jwt = await new SignJWT({ isAdmin: true })
-      .setProtectedHeader({ alg: 'HS256' })
-      .setIssuedAt()
-      .setExpirationTime('2h')
-      .sign(secret);
+    if (password === process.env.ADMIN_PASSWORD) {
+      const secret = await getJwtSecret(); // 👈 秘密鍵を取得
+      const jwt = await new SignJWT({ isAdmin: true })
+        .setProtectedHeader({ alg: 'HS256' })
+        .setIssuedAt()
+        .setExpirationTime('2h')
+        .sign(secret);
+
+      (await cookies()).set('admin-token', jwt, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+      });
+
+      return NextResponse.json({ success: true });
+    }
     
-    // 👇 cookies()は非同期なので、(await cookies()) とする
-    (await cookies()).set('admin-token', jwt, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-    });
+    return NextResponse.json({ success: false }, { status: 401 });
 
-    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Login API Error:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
-
-  return NextResponse.json({ success: false }, { status: 401 });
 }

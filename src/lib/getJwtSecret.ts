@@ -3,7 +3,6 @@ import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 let cachedSecret: Uint8Array | null = null;
 
 export async function getJwtSecret(): Promise<Uint8Array> {
-  // 一度読み込んだら、次からはキャッシュした値を返す（高速化のため）
   if (cachedSecret) {
     return cachedSecret;
   }

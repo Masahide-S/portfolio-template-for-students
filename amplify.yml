@@ -12,7 +12,6 @@ frontend:
         - echo "APP_AWS_REGION=$APP_AWS_REGION" >> .env.production
         - echo "DYNAMODB_TABLE_NAME=$DYNAMODB_TABLE_NAME" >> .env.production
         - echo "ADMIN_PASSWORD=$ADMIN_PASSWORD" >> .env.production
-        - echo "JWT_KEY=$JWT_KEY" >> .env.production 
         - pnpm run build
   artifacts:
     baseDirectory: .next
