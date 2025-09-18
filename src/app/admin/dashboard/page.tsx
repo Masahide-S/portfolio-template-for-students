@@ -4,51 +4,49 @@ import { useRouter } from 'next/navigation';
 import Preview from '@/components/admin/Preview';
 import Editor, { OnMount } from '@monaco-editor/react';
 import { getContent, saveContent } from './actions';
-import type { SiteData } from '@/lib/dynamodb'; // SiteDataの型をインポート
+import type { SiteData } from '@/lib/dynamodb';
 
 export default function DashboardPage() {
-  // 👇 useStateに型を指定
-  const [content, setContent] = useState<SiteData | null>(null); 
+  const [content, setContent] = useState<SiteData | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
   const editorRef = useRef<any>(null);
 
   useEffect(() => {
-    getContent()
-      .then(data => {
-        if (!data) {
-          router.push('/admin/login');
-        } else {
-          setContent(data);
-        }
-      })
+    // このページはmiddlewareによって保護されているため、
+    // 表示された時点で認証済みであることが保証されています。
+    getContent().then(data => {
+      if (data) {
+        setContent(data);
+      } else {
+        // もし何らかの理由でデータが取得できなかった場合はログインページに戻す
+        console.error("Authenticated but failed to fetch content.");
+        router.push('/admin/login');
+      }
+    });
   }, [router]);
 
   const handleEditorDidMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
   };
 
-  // 編集内容をプレビューにリアルタイム反映
   const handleEditorChange = (value: string | undefined) => {
     if (value === undefined) return;
     try {
       setContent(JSON.parse(value));
     } catch (error) {
-      // JSON形式が正しくない入力途中の場合は何もしない
+      // JSON形式が正しくない入力途中の場合はプレビューを更新しない
     }
   };
 
-  // 保存処理
   const handleSave = async () => {
     if (!editorRef.current) return;
-    setIsSaving(true);
     
-    // エディタの最新の内容を取得
+    setIsSaving(true);
     const currentContent = editorRef.current.getValue();
     
     try {
       const parsedContent = JSON.parse(currentContent);
-      // Server Actionを呼び出して保存
       const result = await saveContent(parsedContent);
       
       if (result.success) {
@@ -63,7 +61,6 @@ export default function DashboardPage() {
     setIsSaving(false);
   };
 
-  // ログアウト処理
   const handleLogout = async () => {
     await fetch('/api/logout', { method: 'POST' });
     router.push('/');
