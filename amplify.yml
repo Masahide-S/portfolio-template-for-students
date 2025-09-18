@@ -3,12 +3,18 @@ frontend:
   phases:
     preBuild:
       commands:
-        # corepackを有効化してpnpmを使えるようにする
+        # pnpmを有効化するあなたの設定は、そのまま活かします
         - corepack enable
         - corepack prepare pnpm@latest --activate
         - pnpm install
     build:
       commands:
+        # ▼▼▼ ビルド前に、Amplifyの環境変数を.env.productionファイルに書き出す ▼▼▼
+        - echo "APP_AWS_REGION=$APP_AWS_REGION" >> .env.production
+        - echo "DYNAMODB_TABLE_NAME=$DYNAMODB_TABLE_NAME" >> .env.production
+        - echo "ADMIN_PASSWORD=$ADMIN_PASSWORD" >> .env.production
+        - echo "SECRET_COOKIE_PASSWORD=$SECRET_COOKIE_PASSWORD" >> .env.production
+        # ▲▲▲ ここまでが重要な追加部分です ▲▲▲
         - pnpm run build
   artifacts:
     baseDirectory: .next
@@ -17,3 +23,4 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
+      - .next/cache
