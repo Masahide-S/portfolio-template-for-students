@@ -3,69 +3,67 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Preview from '@/components/admin/Preview';
 import Editor, { OnMount } from '@monaco-editor/react';
+import { getContent, saveContent } from './actions';
+import type { SiteData } from '@/lib/dynamodb'; // SiteDataの型をインポート
 
 export default function DashboardPage() {
-  const [content, setContent] = useState(null);
+  // 👇 useStateに型を指定
+  const [content, setContent] = useState<SiteData | null>(null); 
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
   const editorRef = useRef<any>(null);
-  // 👇 この行が抜けていました
-  const [initialValue, setInitialValue] = useState<string>(''); 
 
   useEffect(() => {
-    fetch('/api/content')
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Failed to fetch content');
-        }
-        return res.json();
-      })
+    getContent()
       .then(data => {
-        setContent(data);
-        if (data) {
-          setInitialValue(JSON.stringify(data, null, 2));
+        if (!data) {
+          router.push('/admin/login');
+        } else {
+          setContent(data);
         }
       })
-      .catch(error => {
-        console.error("Dashboard fetch error:", error);
-        router.push('/admin/login');
-      });
   }, [router]);
 
   const handleEditorDidMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
   };
 
+  // 編集内容をプレビューにリアルタイム反映
   const handleEditorChange = (value: string | undefined) => {
     if (value === undefined) return;
     try {
       setContent(JSON.parse(value));
     } catch (error) {
-      //
+      // JSON形式が正しくない入力途中の場合は何もしない
     }
   };
 
+  // 保存処理
   const handleSave = async () => {
     if (!editorRef.current) return;
-    await editorRef.current.getAction('editor.action.formatDocument').run();
-    const formattedContent = editorRef.current.getValue();
-    
     setIsSaving(true);
+    
+    // エディタの最新の内容を取得
+    const currentContent = editorRef.current.getValue();
+    
     try {
-      const parsedContent = JSON.parse(formattedContent);
-      await fetch('/api/content', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(parsedContent),
-      });
-      setContent(parsedContent);
-      alert('保存しました！');
+      const parsedContent = JSON.parse(currentContent);
+      // Server Actionを呼び出して保存
+      const result = await saveContent(parsedContent);
+      
+      if (result.success) {
+        setContent(parsedContent);
+        alert('保存しました！');
+      } else {
+        alert('保存に失敗しました。');
+      }
     } catch (error) {
       alert('JSONの形式が正しくないため、保存できませんでした。');
     }
     setIsSaving(false);
   };
 
+  // ログアウト処理
   const handleLogout = async () => {
     await fetch('/api/logout', { method: 'POST' });
     router.push('/');
@@ -84,7 +82,7 @@ export default function DashboardPage() {
         <div className="p-4 border-b border-surface flex-shrink-0 flex justify-between items-center">
           <h1 className="text-xl font-bold">Content Editor</h1>
           <div className="flex items-center gap-4">
-            <button onClick={handleSave} disabled={isSaving} className="px-4 py-2 bg-primary text-white rounded-md">
+            <button onClick={handleSave} disabled={isSaving} className="px-4 py-2 bg-primary text-white rounded-md disabled:opacity-50">
               {isSaving ? '保存中...' : '保存'}
             </button>
             <button onClick={handleLogout} className="px-4 py-2 bg-gray-600 text-white rounded-md">
@@ -97,15 +95,12 @@ export default function DashboardPage() {
             height="100%"
             language="json"
             theme="vs-dark"
-            defaultValue={initialValue}
+            defaultValue={JSON.stringify(content, null, 2)}
             onChange={handleEditorChange}
             onMount={handleEditorDidMount}
             options={{
               wordWrap: 'on',
-              minimap: { enabled: false },
-              formatOnType: true,
-              formatOnPaste: true,
-              autoIndent: 'full',
+              minimap: { enabled: false }
             }}
           />
         </div>
