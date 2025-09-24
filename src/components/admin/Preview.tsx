@@ -7,6 +7,8 @@ import { tagStyles } from '@/data/tagStyles';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import Knowledge from '@/components/Knowledge';
+import Timeline from '@/components/Timeline';
+import Awards from '@/components/Awards';
 import Creations from '@/components/Creations';
 import Connect from '@/components/Connect';
 import Footer from '@/components/Footer';
@@ -22,14 +24,21 @@ const Preview: React.FC<{ content: any }> = ({ content }) => {
   }
 
   return (
-    // ▼▼▼ このdivに transform クラスを追加 ▼▼▼
     <div className="w-full h-full bg-white transform">
-    {/* ▲▲▲ ここまで ▲▲▲ */}
       <div className="overflow-y-auto h-full text-base">
         <Header navItems={header?.navItems || []} />
         <main>
           <Hero profile={profile || {}} contact={contact || {}} />
           <Knowledge skills={skills || {}} certifications={certifications?.items || []} />
+          <Timeline 
+            timeline={timeline || []} 
+            profile={profile || {}} 
+            tagStyles={tagStyles} 
+          />
+          <Awards 
+            awardItems={awards || []} 
+            tagStyles={tagStyles} 
+          />
           <Creations 
             researchItems={research || []} 
             products={products || []} 
