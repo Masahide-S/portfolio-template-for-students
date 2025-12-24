@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { IconType } from 'react-icons';
 import { FaGithub, FaExternalLinkAlt, FaCode, FaLightbulb, FaVuejs, FaAws, FaGoogle, FaLine, FaReact, FaNodeJs, FaDocker, FaPython, FaDatabase, FaPhp, FaMapMarkedAlt } from 'react-icons/fa';
 import { SiNextdotjs, SiFirebase, SiVercel, SiTypescript, SiTailwindcss } from "react-icons/si";
+import { FaGolang } from "react-icons/fa6";
 
 // Swiper関連
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -15,7 +16,7 @@ import 'swiper/css/free-mode';
 // アイコン名とコンポーネントを対応付けるマップ
 const iconMap: { [key: string]: IconType } = {
   FaCode, FaLightbulb, FaVuejs, FaAws, FaGoogle, FaLine,
-  FaReact, FaNodeJs, FaDocker, FaPython, FaDatabase, FaPhp, FaMapMarkedAlt,
+  FaReact, FaNodeJs, FaDocker, FaPython, FaDatabase, FaPhp, FaMapMarkedAlt, FaGolang,
   SiNextdotjs, SiFirebase, SiVercel, SiTypescript, SiTailwindcss
 };
 

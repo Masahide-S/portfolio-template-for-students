@@ -32,4 +32,5 @@ export const tagStyles: { [key: string]: { color: string; iconName: string } } =
   'PHP': { color: 'bg-indigo-100 text-indigo-800', iconName: 'FaPhp' },
   'Tailwind CSS': { color: 'bg-cyan-100 text-cyan-800', iconName: 'SiTailwindcss' },
   'Leaflet.js': { color: 'bg-green-100 text-green-800', iconName: 'FaMapMarkedAlt' },
+  'Go': { color: 'bg-cyan-100 text-cyan-800', iconName: 'FaGolang' },
 };
