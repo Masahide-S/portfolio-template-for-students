@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { RiPresentationLine } from 'react-icons/ri';
 import TimelineItem from './TimelineItem';
 import { IconType } from 'react-icons';
 

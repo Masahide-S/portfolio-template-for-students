@@ -1,5 +1,3 @@
-// アイコンのインポートは不要になるので、すべて削除します
-
 // 型定義からIconTypeを削除し、iconNameをstringにする
 export const tagStyles: { [key: string]: { color: string; iconName: string } } = {
   '学歴': { color: 'bg-sky-100 text-sky-800', iconName: 'FaGraduationCap' },
@@ -7,6 +5,7 @@ export const tagStyles: { [key: string]: { color: string; iconName: string } } =
   'ハッカソン': { color: 'bg-amber-100 text-amber-800', iconName: 'FaCode' },
   '受賞': { color: 'bg-rose-100 text-rose-800', iconName: 'FaTrophy' },
   '研究': { color: 'bg-teal-100 text-teal-800', iconName: 'FaFlask' },
+  '学会発表': { color: 'bg-blue-100 text-blue-800', iconName: 'RiPresentationLine' },
   'イベント': { color: 'bg-purple-100 text-purple-800', iconName: 'FaUsers' },
   '開発': { color: 'bg-indigo-100 text-indigo-800', iconName: 'FaCode' },
   'アイデア': { color: 'bg-amber-100 text-amber-800', iconName: 'FaLightbulb' },

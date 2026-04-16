@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { FaFlask } from 'react-icons/fa';
+import { RiPresentationLine } from 'react-icons/ri';
 import CollapsibleCard from './CollapsibleCard';
 import { IconType } from 'react-icons';
 
