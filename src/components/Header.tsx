@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
-
-type NavItem = { name: string; href: string };
+import type { NavItem } from '@/types';
 
 const Header: React.FC<{ navItems: NavItem[] }> = ({ navItems = [] }) => {
   return (

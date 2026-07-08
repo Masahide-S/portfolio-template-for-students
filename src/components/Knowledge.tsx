@@ -1,11 +1,11 @@
 import React from 'react';
 import Skills from './Skills';
 import Certifications from './Certifications';
+import type { Skills as SkillsType, Certification } from '@/types';
 
-// page.tsxから渡されるpropsの型を定義
 interface KnowledgeProps {
-  skills: any;
-  certifications: any;
+  skills: SkillsType;
+  certifications: Certification[];
 }
 
 const Knowledge: React.FC<KnowledgeProps> = ({ skills, certifications }) => {

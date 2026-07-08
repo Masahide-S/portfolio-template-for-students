@@ -15,12 +15,11 @@ async function verifyAuth() {
   try {
     await jwtVerify(token, secret);
     return true;
-  } catch (e) {
+  } catch (_error) {
     return false;
   }
 }
 
-// データ取得アクション
 export async function getContent() {
   const isAuthed = await verifyAuth();
   if (!isAuthed) {
@@ -30,8 +29,7 @@ export async function getContent() {
   return await getSiteData();
 }
 
-// データ保存アクション
-export async function saveContent(newContent: any) {
+export async function saveContent(newContent: Partial<Record<string, unknown>>) {
   const isAuthed = await verifyAuth();
   if (!isAuthed) {
     console.error("saveContent: Unauthorized access attempt.");

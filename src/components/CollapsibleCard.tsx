@@ -2,19 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { IconType } from 'react-icons';
-
-// ▼▼▼ 使用する可能性のあるアイコンをすべてインポート ▼▼▼
-import { 
-  FaGraduationCap, FaBuilding, FaCode, FaLightbulb, FaTrophy, FaFlask, 
-  FaUsers, FaBrain, FaPalette, FaBook, FaCertificate 
-} from 'react-icons/fa';
-import { RiDatabaseLine, RiPresentationLine } from "react-icons/ri";
-
-// アイコン名（文字列）とアイコンコンポーネントを対応付けるための「マップ」オブジェクト
-const iconMap: { [key: string]: IconType } = {
-  FaGraduationCap, FaBuilding, FaCode, FaLightbulb, FaTrophy, FaFlask, 
-  FaUsers, FaBrain, FaPalette, FaBook, FaCertificate, RiDatabaseLine, RiPresentationLine
-};
+import { iconMap } from '@/lib/icons';
 
 // --- このコンポーネントが受け取るデータの型定義 ---
 interface Detail {

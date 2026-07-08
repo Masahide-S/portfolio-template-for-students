@@ -1,9 +1,10 @@
 import React from 'react';
 import GitHubActivity from './GitHubActivity';
 import Contact from './Contact';
+import type { Contact as ContactType } from '@/types';
 
 interface ConnectProps {
-  contact: any;
+  contact: ContactType;
 }
 
 const Connect: React.FC<ConnectProps> = ({ contact }) => {

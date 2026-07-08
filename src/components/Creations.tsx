@@ -1,11 +1,12 @@
 import React from 'react';
 import Research from './Research';
 import Products from './Products';
+import type { ResearchItem, Product, TagStyles } from '@/types';
 
 interface CreationsProps {
-  researchItems: any;
-  products: any;
-  tagStyles: any;
+  researchItems: ResearchItem[];
+  products: Product[];
+  tagStyles: TagStyles;
 }
 
 const Creations: React.FC<CreationsProps> = ({ researchItems, products, tagStyles }) => {
