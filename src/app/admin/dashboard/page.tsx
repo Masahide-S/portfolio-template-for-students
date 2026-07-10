@@ -4,13 +4,13 @@ import { useRouter } from 'next/navigation';
 import Preview from '@/components/admin/Preview';
 import Editor, { OnMount } from '@monaco-editor/react';
 import { getContent, saveContent } from './actions';
-import type { SiteData } from '@/lib/dynamodb';
+import type { SiteData } from '@/types';
 
 export default function DashboardPage() {
-  const [content, setContent] = useState<SiteData | null>(null);
+  const [content, setContent] = useState<Partial<SiteData> | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
 
   useEffect(() => {
     // このページはmiddlewareによって保護されているため、
@@ -26,7 +26,7 @@ export default function DashboardPage() {
     });
   }, [router]);
 
-  const handleEditorDidMount: OnMount = (editor, monaco) => {
+  const handleEditorDidMount: OnMount = (editor, _monaco) => {
     editorRef.current = editor;
   };
 
@@ -34,28 +34,28 @@ export default function DashboardPage() {
     if (value === undefined) return;
     try {
       setContent(JSON.parse(value));
-    } catch (error) {
+    } catch (_error) {
       // JSON形式が正しくない入力途中の場合はプレビューを更新しない
     }
   };
 
   const handleSave = async () => {
     if (!editorRef.current) return;
-    
+
     setIsSaving(true);
     const currentContent = editorRef.current.getValue();
-    
+
     try {
       const parsedContent = JSON.parse(currentContent);
       const result = await saveContent(parsedContent);
-      
+
       if (result.success) {
         setContent(parsedContent);
         alert('保存しました！');
       } else {
         alert('保存に失敗しました。');
       }
-    } catch (error) {
+    } catch (_error) {
       alert('JSONの形式が正しくないため、保存できませんでした。');
     }
     setIsSaving(false);

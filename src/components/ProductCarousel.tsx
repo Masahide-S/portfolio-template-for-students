@@ -2,23 +2,14 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { IconType } from 'react-icons';
-import { FaGithub, FaExternalLinkAlt, FaCode, FaLightbulb, FaVuejs, FaAws, FaGoogle, FaLine, FaReact, FaNodeJs, FaDocker, FaPython, FaDatabase, FaPhp, FaMapMarkedAlt } from 'react-icons/fa';
-import { SiNextdotjs, SiFirebase, SiVercel, SiTypescript, SiTailwindcss } from "react-icons/si";
-import { FaGolang } from "react-icons/fa6";
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { iconMap } from '@/lib/icons';
 
 // Swiper関連
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Mousewheel } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
-
-// アイコン名とコンポーネントを対応付けるマップ
-const iconMap: { [key: string]: IconType } = {
-  FaCode, FaLightbulb, FaVuejs, FaAws, FaGoogle, FaLine,
-  FaReact, FaNodeJs, FaDocker, FaPython, FaDatabase, FaPhp, FaMapMarkedAlt, FaGolang,
-  SiNextdotjs, SiFirebase, SiVercel, SiTypescript, SiTailwindcss
-};
 
 // 型定義
 type Product = {

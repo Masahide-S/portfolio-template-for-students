@@ -1,14 +1,14 @@
 "use client";
 
 import React from 'react';
-import { FaGithub, FaEnvelope } from 'react-icons/fa6';
 import Image from 'next/image';
+import { calculateAge, calculateGrade } from '@/lib/utils';
 
 // 型定義
 type Profile = {
   name?: string;
   catchphrase?: string;
-  birthDate?: string; // 文字列として受け取る
+  birthDate?: string;
   university?: {
     name?: string;
     faculty?: string;
@@ -23,24 +23,12 @@ type Contact = {
   githubId?: string;
 };
 
-const Hero: React.FC<{ profile: Profile, contact: Contact }> = ({ profile = {}, contact = {} }) => {
-  // 年齢や学年の計算ロジックはpropsを元に行う
-  let age = 0;
-  if (profile.birthDate) {
-    const birthDateObj = new Date(profile.birthDate);
-    const today = new Date();
-    age = today.getFullYear() - birthDateObj.getFullYear();
-    const m = today.getMonth() - birthDateObj.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDateObj.getDate())) {
-      age--;
-    }
-  }
+const Hero: React.FC<{ profile: Profile, contact: Contact }> = ({ profile = {}, contact: _contact = {} }) => {
+  const age = profile.birthDate ? calculateAge(profile.birthDate) : 0;
 
   let affiliationText = "";
   if (profile.university?.entranceYear) {
-    const today = new Date();
-    let grade = today.getFullYear() - profile.university.entranceYear + 1;
-    if (today.getMonth() < 3) { grade--; }
+    const grade = calculateGrade(profile.university.entranceYear);
     if (grade > 4) {
       affiliationText = `${profile.university.name} ${profile.university.faculty} 卒業`;
     } else if (grade > 0) {

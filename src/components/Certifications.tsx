@@ -1,17 +1,6 @@
 import React from 'react';
-import { FaAward, FaCertificate } from 'react-icons/fa'; // 念のため他のアイコンもインポート
-import { IconType } from 'react-icons';
-
-// アイコン名とコンポーネントを対応付けるマップ
-const iconMap: { [key: string]: IconType } = { FaAward, FaCertificate };
-
-// 型定義
-type Certification = {
-  name: string;
-  issuer: string;
-  date: string;
-  iconName: string; 
-};
+import { iconMap } from '@/lib/icons';
+import type { Certification } from '@/types';
 
 const Certifications: React.FC<{ certifications: Certification[] }> = ({ certifications = [] }) => {
   const getIcon = (iconName: string) => {

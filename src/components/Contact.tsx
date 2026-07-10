@@ -1,16 +1,14 @@
 "use client";
 
 import React, { useState } from 'react';
-import { FaGithub, FaPaperPlane, FaEnvelope } from 'react-icons/fa';
+import { FaPaperPlane } from 'react-icons/fa';
+import type { Contact as ContactType } from '@/types';
 
-// 型定義
-type ContactData = {
-  githubId?: string;
-  email?: string;
-  formspreeEndpoint?: string;
-};
+interface ContactProps {
+  contact: ContactType;
+}
 
-const Contact: React.FC<{ contact: ContactData }> = ({ contact = {} }) => {
+const Contact: React.FC<ContactProps> = ({ contact }) => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 

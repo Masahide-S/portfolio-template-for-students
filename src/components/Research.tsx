@@ -2,23 +2,8 @@
 
 import React from 'react';
 import { FaFlask } from 'react-icons/fa';
-import { RiPresentationLine } from 'react-icons/ri';
 import CollapsibleCard from './CollapsibleCard';
-import { IconType } from 'react-icons';
-
-// ▼▼▼ 型定義を修正 ▼▼▼
-type ResearchItem = {
-  date: string;
-  title: string;
-  description: string;
-  tags: string[];
-  details?: { subtitle: string; text: string }[];
-};
-
-type TagStyles = {
-  [key: string]: { color: string; iconName: string }; // 👈 icon -> iconName
-};
-// ▲▲▲ ここまで ▲▲▲
+import type { ResearchItem, TagStyles } from '@/types';
 
 const Research: React.FC<{ researchItems: ResearchItem[], tagStyles: TagStyles }> = ({ researchItems = [], tagStyles }) => {
   return (

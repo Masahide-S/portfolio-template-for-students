@@ -3,23 +3,9 @@
 import React from 'react';
 import { FaTrophy } from 'react-icons/fa';
 import CollapsibleCard from './CollapsibleCard';
-import { IconType } from 'react-icons';
+import type { Award, TagStyles } from '@/types';
 
-// ▼▼▼ 型定義を修正 ▼▼▼
-type AwardItem = {
-  date: string;
-  title: string;
-  description: string;
-  tags: string[];
-  details?: { subtitle: string; text: string }[];
-};
-
-type TagStyles = {
-  [key: string]: { color: string; iconName: string }; // 👈 icon -> iconName
-};
-// ▲▲▲ ここまで ▲▲▲
-
-const Awards: React.FC<{ awardItems: AwardItem[], tagStyles: TagStyles }> = ({ awardItems = [], tagStyles }) => {
+const Awards: React.FC<{ awardItems: Award[], tagStyles: TagStyles }> = ({ awardItems = [], tagStyles }) => {
   return (
     <section id="awards" className="py-20 bg-surface border-t-2 border-primary/10">
       <div className="container mx-auto px-6">

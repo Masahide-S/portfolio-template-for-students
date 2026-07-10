@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { tagStyles } from '@/data/tagStyles';
+import type { SiteData } from '@/types';
 
 // サイトの全コンポーネントをインポート
 import Header from '@/components/Header';
@@ -13,7 +14,11 @@ import Creations from '@/components/Creations';
 import Connect from '@/components/Connect';
 import Footer from '@/components/Footer';
 
-const Preview: React.FC<{ content: any }> = ({ content }) => {
+interface PreviewProps {
+  content: Partial<SiteData> | null;
+}
+
+const Preview: React.FC<PreviewProps> = ({ content }) => {
   const { 
     header, profile, contact, skills, certifications, 
     timeline, awards, research, products 
@@ -28,25 +33,28 @@ const Preview: React.FC<{ content: any }> = ({ content }) => {
       <div className="overflow-y-auto h-full text-base">
         <Header navItems={header?.navItems || []} />
         <main>
-          <Hero profile={profile || {}} contact={contact || {}} />
-          <Knowledge skills={skills || {}} certifications={certifications?.items || []} />
-          <Timeline 
-            timeline={timeline || []} 
-            profile={profile || {}} 
-            tagStyles={tagStyles} 
+          <Hero profile={profile || {} as never} contact={contact || {} as never} />
+          <Knowledge
+            skills={skills || { categories: [] }}
+            certifications={certifications?.items || []}
           />
-          <Awards 
-            awardItems={awards || []} 
-            tagStyles={tagStyles} 
+          <Timeline
+            timeline={timeline || []}
+            profile={profile || {} as never}
+            tagStyles={tagStyles}
           />
-          <Creations 
-            researchItems={research || []} 
-            products={products || []} 
-            tagStyles={tagStyles} 
+          <Awards
+            awardItems={awards || []}
+            tagStyles={tagStyles}
           />
-          <Connect contact={contact || {}} />
+          <Creations
+            researchItems={research || []}
+            products={products || []}
+            tagStyles={tagStyles}
+          />
+          <Connect contact={contact || {} as never} />
         </main>
-        <Footer profile={profile || {}} header={header || {}} />
+        <Footer profile={profile || {} as never} header={header || {} as never} />
       </div>
     </div>
   );

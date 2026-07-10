@@ -1,10 +1,9 @@
-"use client"; 
+"use client";
 
 import React, { useState, useMemo } from 'react';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
-import { RiPresentationLine } from 'react-icons/ri';
 import TimelineItem from './TimelineItem';
-import { IconType } from 'react-icons';
+import { calculateGrade, getAcademicStatus, compareDates } from '@/lib/utils';
 
 // 型定義
 type TimelineItemData = {
@@ -29,34 +28,12 @@ interface TimelineProps {
 const Timeline: React.FC<TimelineProps> = ({ timeline = [], profile = {}, tagStyles = {} }) => {
   const historyItems = timeline;
   const { university = {} } = profile;
-  
-  // --- 動的計算ロジック ---
-  let currentGrade = 0;
-  if (university.entranceYear) {
-    const today = new Date();
-    currentGrade = today.getFullYear() - university.entranceYear + 1;
-    if (today.getMonth() < 3) { currentGrade--; }
-  }
 
-  // 👇 getAcademicStatus関数にreturn文を追加して修正
-  const getAcademicStatus = (eventDate: string) => {
+  const currentGrade = university.entranceYear ? calculateGrade(university.entranceYear) : 0;
+
+  const getAcademicStatusForItem = (eventDate: string) => {
     if (!university.entranceYear) return "";
-    const parts = eventDate.replace('年', '-').replace('月', '').split('-');
-    const eventYear = parseInt(parts[0]);
-    const eventMonth = parseInt(parts[1]);
-    let eventGrade = eventYear - university.entranceYear + 1;
-    if (eventMonth < 4) { eventGrade--; }
-    
-    if (eventGrade < 1) {
-      return "入学前";
-    } else if (eventGrade > 4) {
-      return "卒業後";
-    } else {
-      if (eventGrade === currentGrade) {
-        return `大学${eventGrade}年生（現在）`;
-      }
-      return `大学${eventGrade}年生`;
-    }
+    return getAcademicStatus(eventDate, university.entranceYear, currentGrade);
   };
 
   // --- インタラクティブ機能のための状態管理 ---
@@ -72,16 +49,8 @@ const Timeline: React.FC<TimelineProps> = ({ timeline = [], profile = {}, tagSty
       : historyItems;
 
     return [...filtered].sort((a, b) => {
-      const partsA = a.date.replace('年', '-').replace('月', '').split('-');
-      const dateA = new Date(parseInt(partsA[0]), parseInt(partsA[1]) - 1, 1);
-      const partsB = b.date.replace('年', '-').replace('月', '').split('-');
-      const dateB = new Date(parseInt(partsB[0]), parseInt(partsB[1]) - 1, 1);
-      
-      if (sortOrder === 'desc') {
-        return dateB.getTime() - dateA.getTime();
-      } else {
-        return dateA.getTime() - dateB.getTime();
-      }
+      const comparison = compareDates(a.date, b.date);
+      return sortOrder === 'desc' ? -comparison : comparison;
     });
   }, [activeTag, sortOrder, historyItems]);
 
@@ -119,10 +88,10 @@ const Timeline: React.FC<TimelineProps> = ({ timeline = [], profile = {}, tagSty
         <div className="h-[60vh] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-surface">
           <div className="relative border-l-2 border-primary/50 ml-6 md:ml-auto md:mr-auto max-w-2xl">
             {sortedAndFilteredItems.map((item, index) => (
-              <TimelineItem 
-                key={index} 
-                item={item} 
-                getAcademicStatus={getAcademicStatus} 
+              <TimelineItem
+                key={index}
+                item={item}
+                getAcademicStatus={getAcademicStatusForItem}
                 tagStyles={tagStyles}
               />
             ))}

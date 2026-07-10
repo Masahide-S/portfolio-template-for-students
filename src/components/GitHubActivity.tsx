@@ -1,14 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 import { FaGithub } from 'react-icons/fa';
+import type { Contact } from '@/types';
 
-// 型定義
-type ContactData = {
-  githubId?: string;
-};
-
-const GitHubActivity: React.FC<{ contact: ContactData }> = ({ contact = {} }) => {
-  const GITHUB_ID = contact.githubId || 'Masahide-S';
+const GitHubActivity: React.FC<{ contact: Contact }> = ({ contact }) => {
+  const GITHUB_ID = contact.github || 'Masahide-S';
 
   // Stats Cardのtokyonightテーマに合わせた色設定
   const statsTheme = "tokyonight";
