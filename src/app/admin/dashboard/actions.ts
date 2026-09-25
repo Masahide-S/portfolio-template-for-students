@@ -36,7 +36,13 @@ export async function saveContent(newContent: Partial<Record<string, unknown>>) 
     throw new Error("Unauthorized");
   }
   try {
-    const client = new DynamoDBClient({ region: process.env.APP_AWS_REGION });
+    const client = new DynamoDBClient({
+      region: process.env.APP_AWS_REGION,
+      credentials: {
+        accessKeyId: process.env.APP_AWS_ACCESS_KEY_ID!,
+        secretAccessKey: process.env.APP_AWS_SECRET_ACCESS_KEY!,
+      },
+    });
     const docClient = DynamoDBDocumentClient.from(client);
     const command = new PutCommand({
       TableName: process.env.DYNAMODB_TABLE_NAME,

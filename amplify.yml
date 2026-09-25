@@ -13,6 +13,11 @@ frontend:
         - echo "DYNAMODB_TABLE_NAME=$DYNAMODB_TABLE_NAME" >> .env.production
         - echo "ADMIN_PASSWORD=$ADMIN_PASSWORD" >> .env.production
         - echo "JWT_KEY=$JWT_KEY" >> .env.production
+        # SSR実行環境(Server Actions等)がDynamoDBにアクセスするための認証情報
+        # AmplifyのSSRコンピュート用ロールはビルド毎に再生成される自動ロールのため、
+        # DynamoDB権限を持たせられない。代わりにIAMユーザーのアクセスキーを使う。
+        - echo "APP_AWS_ACCESS_KEY_ID=$APP_AWS_ACCESS_KEY_ID" >> .env.production
+        - echo "APP_AWS_SECRET_ACCESS_KEY=$APP_AWS_SECRET_ACCESS_KEY" >> .env.production
         # Next.jsのビルドを実行
         - pnpm run build
   artifacts:
