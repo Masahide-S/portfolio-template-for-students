@@ -22,9 +22,10 @@ async function migrate() {
 
   // 2. スキル情報からアイコン(プログラムコード)を削除
   const cleanSkills = {
-    frontend: siteConfig.skills.frontend.map(({ name, icon }) => ({ name, iconName: icon.name })),
-    backend: siteConfig.skills.backend.map(({ name, icon }) => ({ name, iconName: icon.name })),
-    others: siteConfig.skills.others.map(({ name, icon }) => ({ name, iconName: icon.name })),
+    categories: siteConfig.skills.categories.map(({ category, items }) => ({
+      category,
+      items: items.map(({ name, icon }) => ({ name, iconName: icon.name })),
+    })),
   };
 
   // 3. 資格情報からアイコン(プログラムコード)を削除

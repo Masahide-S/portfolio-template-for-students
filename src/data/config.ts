@@ -48,23 +48,34 @@ export const siteConfig = {
   // --- スキル ---
   // あなたの取得しているスキルをここで管理します
   skills: {
-    frontend: [
-      { name: 'HTML', icon: FaHtml5 },
-      { name: 'CSS', icon: FaCss3Alt },
-      { name: 'JavaScript', icon: FaJsSquare },
-      { name: 'TypeScript', icon: SiTypescript },
-      { name: 'React', icon: FaReact },
-      { name: 'Next.js', icon: SiNextdotjs },
-      { name: 'Tailwind CSS', icon: SiTailwindcss },
-    ],
-    backend: [
-      { name: 'Node.js', icon: FaNodeJs },
-      { name: 'Python', icon: FaPython },
-      { name: 'SQL', icon: FaDatabase },
-    ],
-    others: [
-      { name: 'GitHub', icon: FaGithub },
-      { name: 'Docker', icon: FaDocker },
+    categories: [
+      {
+        category: 'frontend',
+        items: [
+          { name: 'HTML', icon: FaHtml5 },
+          { name: 'CSS', icon: FaCss3Alt },
+          { name: 'JavaScript', icon: FaJsSquare },
+          { name: 'TypeScript', icon: SiTypescript },
+          { name: 'React', icon: FaReact },
+          { name: 'Next.js', icon: SiNextdotjs },
+          { name: 'Tailwind CSS', icon: SiTailwindcss },
+        ],
+      },
+      {
+        category: 'backend',
+        items: [
+          { name: 'Node.js', icon: FaNodeJs },
+          { name: 'Python', icon: FaPython },
+          { name: 'SQL', icon: FaDatabase },
+        ],
+      },
+      {
+        category: 'others',
+        items: [
+          { name: 'GitHub', icon: FaGithub },
+          { name: 'Docker', icon: FaDocker },
+        ],
+      },
     ],
   },
 
