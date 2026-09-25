@@ -18,7 +18,7 @@ export const siteConfig = {
       faculty: "データサイエンス学部",
       entranceYear: 2024, //あなたの入学年
     },
-    profileImage: "/profile.png", //あまたのプロフィール画像URL
+    profileImage: "/profile.jpg", //あまたのプロフィール画像URL
     mainVisual: "/MainVisual.jpg", //メインビジュアルのURL
     aboutMe: `私はデータサイエンスを専攻する大学生で、プログラミングとAI技術に強い関心を持っています。
 新しい技術を学び、それを活用して人々の生活を便利にすることに情熱を注いでいます。
