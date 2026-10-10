@@ -1,7 +1,5 @@
-import { IconType } from 'react-icons';
-import { FaGraduationCap, FaBuilding, FaCode, FaLightbulb, FaTrophy, FaFlask, FaUsers, FaBrain, FaPalette, FaHtml5, FaCss3Alt, FaJsSquare, FaReact, FaNodeJs, FaAward, FaPython, FaDatabase, FaGithub, FaDocker, FaBook, FaCertificate} from 'react-icons/fa';
-import { SiTypescript, SiNextdotjs, SiTailwindcss,} from 'react-icons/si';
-import { RiDatabaseLine } from "react-icons/ri";
+import { FaHtml5, FaCss3Alt, FaJsSquare, FaReact, FaNodeJs, FaAward, FaPython, FaDatabase, FaGithub, FaDocker } from 'react-icons/fa';
+import { SiTypescript, SiNextdotjs, SiTailwindcss } from 'react-icons/si';
 
 // =================================================================================
 // 📌 サイトの基本設定
@@ -301,25 +299,4 @@ LLMにしっかりと触れるには初めてで、試行錯誤を重ねなが�
       },
     ],
   },
-
-  // --- タグのスタイル定義 ---
-  // ここでサイト全体のタグを一括管理します
-  tagStyles: {
-    '学歴': { color: 'bg-sky-100 text-sky-800', icon: FaGraduationCap },
-    'インターン': { color: 'bg-emerald-100 text-emerald-800', icon: FaBuilding },
-    'ハッカソン': { color: 'bg-amber-100 text-amber-800', icon: FaCode },
-    '個人開発': { color: 'bg-indigo-100 text-indigo-800', icon: FaLightbulb },
-    '受賞': { color: 'bg-rose-100 text-rose-800', icon: FaTrophy },
-    '研究': { color: 'bg-teal-100 text-teal-800', icon: FaFlask },
-    'イベント': { color: 'bg-purple-100 text-purple-800', icon: FaUsers },
-    '開発': { color: 'bg-indigo-100 text-indigo-800', icon: FaCode },
-    'アイデア': { color: 'bg-amber-100 text-amber-800', icon: FaLightbulb },
-    '最優秀賞': { color: 'bg-rose-100 text-rose-800', icon: FaTrophy },
-    '特別賞': { color: 'bg-emerald-100 text-emerald-800', icon: FaTrophy },
-    '機械学習': { color: 'bg-teal-100 text-teal-800', icon: FaBrain },
-    'UI/UX': { color: 'bg-purple-100 text-purple-800', icon: FaPalette },
-    '勉強': { color: 'bg-gray-100 text-gray-800', icon: FaBook },
-    '資格': { color: 'bg-yellow-100 text-yellow-800', icon: FaCertificate },
-    'データサイエンス': { color: 'bg-cyan-100 text-cyan-800', icon: RiDatabaseLine },
-  } as { [key: string]: { color: string; icon: IconType } },
 };
