@@ -2,7 +2,13 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import type { SiteData } from "@/types";
 
-const client = new DynamoDBClient({ region: process.env.APP_AWS_REGION });
+const client = new DynamoDBClient({
+  region: process.env.APP_AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.APP_AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.APP_AWS_SECRET_ACCESS_KEY!,
+  },
+});
 const docClient = DynamoDBDocumentClient.from(client);
 
 export type { SiteData };

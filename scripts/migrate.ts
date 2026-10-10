@@ -6,7 +6,13 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 // データベース接続
-const client = new DynamoDBClient({ region: process.env.APP_AWS_REGION });
+const client = new DynamoDBClient({
+  region: process.env.APP_AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.APP_AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.APP_AWS_SECRET_ACCESS_KEY!,
+  },
+});
 const docClient = DynamoDBDocumentClient.from(client);
 
 async function migrate() {
@@ -22,9 +28,10 @@ async function migrate() {
 
   // 2. スキル情報からアイコン(プログラムコード)を削除
   const cleanSkills = {
-    frontend: siteConfig.skills.frontend.map(({ name, icon }) => ({ name, iconName: icon.name })),
-    backend: siteConfig.skills.backend.map(({ name, icon }) => ({ name, iconName: icon.name })),
-    others: siteConfig.skills.others.map(({ name, icon }) => ({ name, iconName: icon.name })),
+    categories: siteConfig.skills.categories.map(({ category, items }) => ({
+      category,
+      items: items.map(({ name, icon }) => ({ name, iconName: icon.name })),
+    })),
   };
 
   // 3. 資格情報からアイコン(プログラムコード)を削除
