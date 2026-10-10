@@ -18,6 +18,8 @@ frontend:
         # DynamoDB権限を持たせられない。代わりにIAMユーザーのアクセスキーを使う。
         - echo "APP_AWS_ACCESS_KEY_ID=$APP_AWS_ACCESS_KEY_ID" >> .env.production
         - echo "APP_AWS_SECRET_ACCESS_KEY=$APP_AWS_SECRET_ACCESS_KEY" >> .env.production
+        # 管理画面での保存をトリガーに再ビルドするためのAmplify Webhook URL
+        - echo "AMPLIFY_DEPLOY_WEBHOOK_URL=$AMPLIFY_DEPLOY_WEBHOOK_URL" >> .env.production
         # Next.jsのビルドを実行
         - pnpm run build
   artifacts:

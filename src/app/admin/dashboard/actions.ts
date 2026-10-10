@@ -49,9 +49,25 @@ export async function saveContent(newContent: Partial<Record<string, unknown>>) 
       Item: newContent,
     });
     await docClient.send(command);
+    await triggerDeploy();
     return { success: true };
   } catch (error) {
     console.error("Save content failed:", error);
     return { success: false, message: "Failed to save content." };
+  }
+}
+
+async function triggerDeploy() {
+  const webhookUrl = process.env.AMPLIFY_DEPLOY_WEBHOOK_URL;
+  if (!webhookUrl) return;
+
+  try {
+    await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{}",
+    });
+  } catch (error) {
+    console.error("Failed to trigger Amplify deploy webhook:", error);
   }
 }
