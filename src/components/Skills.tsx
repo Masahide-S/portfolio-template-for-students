@@ -26,7 +26,7 @@ const Skills: React.FC<{ skills: SkillsType }> = ({ skills }) => {
                 className="flex flex-col items-center gap-2 p-4 rounded-lg transition-all duration-300 hover:bg-base hover:scale-105"
               >
                 <div className="text-5xl text-primary">{getIcon(skill.iconName)}</div>
-                <span className="text-sm font-medium">{skill.name}</span>
+                <span className="text-sm font-medium text-text-main">{skill.name}</span>
               </div>
             ))}
           </div>
