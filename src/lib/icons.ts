@@ -25,7 +25,8 @@ import {
   FaHtml5,
   FaCss3Alt,
   FaJsSquare,
-  FaGithub
+  FaGithub,
+  FaAward
 } from 'react-icons/fa';
 import { FaGolang } from "react-icons/fa6";
 import {
@@ -68,6 +69,7 @@ export const iconMap: Record<string, IconType> = {
   FaCss3Alt,
   FaJsSquare,
   FaGithub,
+  FaAward,
   FaGolang,
   SiNextdotjs,
   SiFirebase,
