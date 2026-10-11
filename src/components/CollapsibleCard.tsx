@@ -15,6 +15,7 @@ interface Item {
   description: string;
   tags: string[];
   details?: Detail[];
+  url?: string;
 }
 interface TagStyles {
   [key: string]: { color: string; iconName: string }; // icon -> iconName に変更
@@ -65,6 +66,17 @@ const CollapsibleCard: React.FC<CollapsibleCardProps> = ({ item, icon, tagStyles
         })}
       </div>
       
+      {item.url && (
+        <a
+          href={item.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-sm font-bold text-primary mb-3 hover:opacity-80 transition-opacity"
+        >
+          詳細を見る ↗
+        </a>
+      )}
+
       {item.details && item.details.length > 0 && (
         <div className="my-4 border-t border-surface pt-4 space-y-2">
           {item.details.map((detail, index) => (
