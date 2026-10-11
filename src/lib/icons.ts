@@ -37,7 +37,8 @@ import {
   SiFirebase,
   SiVercel,
   SiTypescript,
-  SiTailwindcss
+  SiTailwindcss,
+  SiRender
 } from "react-icons/si";
 import { RiDatabaseLine, RiPresentationLine } from "react-icons/ri";
 
@@ -82,6 +83,7 @@ export const iconMap: Record<string, IconType> = {
   SiVercel,
   SiTypescript,
   SiTailwindcss,
+  SiRender,
   RiDatabaseLine,
   RiPresentationLine,
 };

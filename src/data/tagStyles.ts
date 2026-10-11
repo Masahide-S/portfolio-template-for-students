@@ -28,6 +28,7 @@ export const tagStyles: { [key: string]: { color: string; iconName: string } } =
   'LINE': { color: 'bg-lime-100 text-lime-800', iconName: 'FaLine' },
   'React': { color: 'bg-sky-100 text-sky-800', iconName: 'FaReact' },
   'Vercel': { color: 'bg-gray-200 text-gray-900', iconName: 'SiVercel' },
+  'Render': { color: 'bg-indigo-100 text-indigo-800', iconName: 'SiRender' },
   'AWS': { color: 'bg-orange-100 text-orange-800', iconName: 'FaAws' },
   'Gemini': { color: 'bg-indigo-100 text-indigo-800', iconName: 'FaBrain' },
   'TypeScript': { color: 'bg-blue-100 text-blue-800', iconName: 'SiTypescript' },
