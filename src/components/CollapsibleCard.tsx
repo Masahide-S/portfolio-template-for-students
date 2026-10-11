@@ -73,7 +73,7 @@ const CollapsibleCard: React.FC<CollapsibleCardProps> = ({ item, icon, tagStyles
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-sm font-bold text-primary mb-3 hover:opacity-80 transition-opacity"
         >
-          詳細を見る ↗
+          論文を見る ↗
         </a>
       )}
 
