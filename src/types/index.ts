@@ -97,6 +97,7 @@ export interface ResearchItem {
   keywords?: string[];
   date: string;
   details?: { subtitle: string; text: string }[];
+  url?: string;
 }
 
 export interface Product {

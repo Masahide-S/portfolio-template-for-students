@@ -2,6 +2,10 @@
 export const tagStyles: { [key: string]: { color: string; iconName: string } } = {
   '学歴': { color: 'bg-sky-100 text-sky-800', iconName: 'FaGraduationCap' },
   'インターン': { color: 'bg-emerald-100 text-emerald-800', iconName: 'FaBuilding' },
+  'メンター': { color: 'bg-pink-100 text-pink-800', iconName: 'FaChalkboardTeacher' },
+  'SA': { color: 'bg-violet-100 text-violet-800', iconName: 'FaChalkboardTeacher' },
+  '運営': { color: 'bg-stone-100 text-stone-800', iconName: 'FaUserTie' },
+  'OSS': { color: 'bg-slate-100 text-slate-800', iconName: 'FaCodeBranch' },
   'ハッカソン': { color: 'bg-amber-100 text-amber-800', iconName: 'FaCode' },
   '受賞': { color: 'bg-rose-100 text-rose-800', iconName: 'FaTrophy' },
   '最優秀賞': { color: 'bg-orange-100 text-orange-800', iconName: 'FaTrophy' },
