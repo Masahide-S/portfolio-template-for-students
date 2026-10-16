@@ -33,6 +33,7 @@ const GitHubActivity: React.FC<{ contact: Contact }> = ({ contact }) => {
             alt="GitHub Contribution Graph"
             width={828}
             height={128}
+            unoptimized
             className="mx-auto w-full h-auto"
           />
         </div>
@@ -45,6 +46,7 @@ const GitHubActivity: React.FC<{ contact: Contact }> = ({ contact }) => {
             alt="GitHub Stats"
             width={495}
             height={195}
+            unoptimized
             className="rounded-lg shadow-xl"
           />
         </div>
