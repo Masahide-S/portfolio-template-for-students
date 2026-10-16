@@ -45,10 +45,17 @@ export default function DashboardPage() {
     setIsSaving(true);
     const currentContent = editorRef.current.getValue();
 
+    let parsedContent;
     try {
-      const parsedContent = JSON.parse(currentContent);
-      const result = await saveContent(parsedContent);
+      parsedContent = JSON.parse(currentContent);
+    } catch (_error) {
+      alert('JSONの形式が正しくないため、保存できませんでした。');
+      setIsSaving(false);
+      return;
+    }
 
+    try {
+      const result = await saveContent(parsedContent);
       if (result.success) {
         setContent(parsedContent);
         alert('保存しました！');
@@ -56,7 +63,7 @@ export default function DashboardPage() {
         alert('保存に失敗しました。');
       }
     } catch (_error) {
-      alert('JSONの形式が正しくないため、保存できませんでした。');
+      alert('保存処理でエラーが発生しました。ページが古くなっている可能性があるので、リロードしてから再度お試しください。');
     }
     setIsSaving(false);
   };
