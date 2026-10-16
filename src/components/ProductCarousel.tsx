@@ -52,9 +52,9 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products = [], tagSty
               <Image
                 src={product.imageUrl}
                 alt={product.title}
-                layout="fill"
-                objectFit="cover"
-                objectPosition="top"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover object-top"
               />
             </div>
             <div className="p-6 flex flex-col flex-grow">

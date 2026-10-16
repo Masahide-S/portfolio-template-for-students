@@ -38,10 +38,18 @@ const Hero: React.FC<{ profile: Profile, contact: Contact }> = ({ profile = {}, 
 
   return (
     <section id="about">
-      <div 
-        className="w-full h-[40vh] md:h-[50vh] bg-cover bg-center"
-        style={{ backgroundImage: `url('${profile.mainVisual || ''}')` }}
-      ></div>
+      <div className="relative w-full h-[40vh] md:h-[50vh]">
+        {profile.mainVisual && (
+          <Image
+            src={profile.mainVisual}
+            alt="メインビジュアル"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        )}
+      </div>
       <div className="container mx-auto px-6 py-20">
         <h2 className="text-3xl font-bold text-center mb-12 text-text-main relative pb-4 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-primary after:rounded-full">Profile</h2>
         <div className="flex flex-col md:flex-row items-center justify-center gap-12">
