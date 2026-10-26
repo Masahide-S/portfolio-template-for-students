@@ -38,5 +38,8 @@
     "rules": {
       "@typescript-eslint/no-explicit-any": "off"
     }
+  },
+  "volta": {
+    "node": "22.23.4"
   }
 }

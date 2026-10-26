@@ -3,6 +3,10 @@ frontend:
   phases:
     preBuild:
       commands:
+        # .nvmrcで固定したNodeバージョンを使う（ビルドイメージ既定のNodeは脆弱性修正前の場合がある）
+        - nvm install
+        - nvm use
+        - node --version
         - corepack enable
         - corepack prepare pnpm@10.12.4 --activate
         - pnpm install
